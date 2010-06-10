@@ -49,7 +49,7 @@ public class Migration1 extends Migration {
         //
         Map properties = new HashMap();
         properties.put("type_id", "Workspace");
-        properties.put("icon_src", "images/star.png");
+        properties.put("icon_src", "/de.deepamehta.3-workspaces/images/star.png");
         properties.put("implementation", "PlainDocument");
         //
         dms.createTopicType(properties, dataFields);

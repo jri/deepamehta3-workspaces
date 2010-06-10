@@ -1,7 +1,6 @@
 function dm3_workspaces() {
 
-    css_stylesheet("vendor/dm3-workspaces/style/dm3-workspaces.css")
-    topic_type_icons["Workspace"] = create_image("vendor/dm3-workspaces/images/star.png")
+    css_stylesheet("/de.deepamehta.3-workspaces/style/dm3-workspaces.css")
 
 
 
@@ -45,24 +44,7 @@ function dm3_workspaces() {
         }
     }
 
-    // Note: we use the pre_create hook to let the "Workspaces" field be saved also if the user cancels the initial editing.
-    this.pre_create = function(doc) {
-        if (doc.type == "Topic") {
-            doc.fields.push({
-                id: "Workspaces",
-                model: {
-                    type: "relation",
-                    related_type: "Workspace"
-                },
-                view: {
-                    editor: "checkboxes"
-                }
-            })
-        } else {
-            // TODO: handle relations too
-        }
-    }
-
+    // FIXME: drop method
     // Note: we must use the post_create hook to create the relation because at pre_create the document has no ID yet.
     this.post_create = function(doc) {
         // Note 1: we do not relate search results to a workspace. Otherwise the search result would appear
@@ -97,7 +79,7 @@ function dm3_workspaces() {
 
 
     function get_all_workspaces() {
-        return get_topics_by_type("Workspace")
+        return dms.get_topics("Workspace")
     }
 
     /**
@@ -108,13 +90,7 @@ function dm3_workspaces() {
     }
 
     function create_workspace(name) {
-        var fields = [
-            {id: "Name",        model: {type: "text"}, view: {editor: "single line"}, content: name},
-            {id: "Description", model: {type: "html"}, view: {editor: "multi line"},  content: ""}
-        ]
-        var workspace = create_raw_topic("Workspace", fields, {}, "PlainDocument")
-        save_document(workspace)
-        return workspace
+        return create_topic("Workspace", {Name: name})
     }
 
     function workspace_selected(menu_item) {
@@ -134,7 +110,7 @@ function dm3_workspaces() {
     function do_create_workspace() {
         $("#workspace_dialog").dialog("close")
         var name = $("#workspace_name").val()
-        var workspace_id = create_workspace(name)._id
+        var workspace_id = create_workspace(name).id
         update_workspace_menu()
         select_menu_item(workspace_id)
         return false
