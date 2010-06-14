@@ -30,7 +30,8 @@ function dm3_workspaces() {
             var workspace_form = $("<div>").attr("id", "workspace-form").append(workspace_label).append(workspace_menu)
             $("#upper-toolbar").prepend(workspace_form)
             ui.menu("workspace-menu", workspace_selected)
-            update_workspace_menu(workspaces)
+            rebuild_workspace_menu(workspaces)
+            update_cookie()
         }
 
         function create_workspace_dialog() {
@@ -44,28 +45,11 @@ function dm3_workspaces() {
         }
     }
 
-    // FIXME: drop method
-    // Note: we must use the post_create hook to create the relation because at pre_create the document has no ID yet.
-    this.post_create = function(doc) {
-        // Note 1: we do not relate search results to a workspace. Otherwise the search result would appear
-        // as relation when displaying the workspace. That's because an "Auxiliray" relation is not be
-        // created if there is another relation already.
-        // Note 2: we do not relate workspaces to a workspace. This would be contra-intuitive.
-        if (doc.type == "Topic" && doc.topic_type != "Search Result" && doc.topic_type != "Workspace") {
-            var workspace_id = get_workspace_id()
-            // Note: workspace_id is undefined in case the doc is the (just created) default workspace itself.
-            if (workspace_id) {
-                create_relation("Relation", doc._id, workspace_id)
-            }
-        } else {
-            // TODO: assign relations to a workspace
-        }
-    }
-
+    // TODO: handle at server-side
     this.post_delete = function(doc) {
         if (doc.type == "Topic" && doc.topic_type == "Workspace") {
             var workspace_id = get_workspace_id()
-            update_workspace_menu()
+            rebuild_workspace_menu()
             select_menu_item(workspace_id)  // restore selection
         }
     }
@@ -83,7 +67,7 @@ function dm3_workspaces() {
     }
 
     /**
-     * Returns the ID of the currently selected workspace.
+     * Returns the ID of the selected workspace.
      */
     function get_workspace_id() {
         return ui.menu_item("workspace-menu").value
@@ -93,9 +77,13 @@ function dm3_workspaces() {
         return create_topic("Workspace", {Name: name})
     }
 
+    /**
+     * Invoked when the user selects a workspace.
+     */
     function workspace_selected(menu_item) {
         var workspace_id = menu_item.value
         log("Workspace selected: " + workspace_id)
+        update_cookie()
         if (workspace_id == "_new") {
             open_workspace_dialog()
         } else {
@@ -111,12 +99,12 @@ function dm3_workspaces() {
         $("#workspace_dialog").dialog("close")
         var name = $("#workspace_name").val()
         var workspace_id = create_workspace(name).id
-        update_workspace_menu()
+        rebuild_workspace_menu()
         select_menu_item(workspace_id)
         return false
     }
 
-    function update_workspace_menu(workspaces) {
+    function rebuild_workspace_menu(workspaces) {
         if (!workspaces) {
             workspaces = get_all_workspaces()
         }
@@ -130,7 +118,18 @@ function dm3_workspaces() {
         ui.add_menu_item("workspace-menu", {label: "New Workspace...", value: "_new", is_trigger: true})
     }
 
+    /**
+     * Selects a workspace programmatically.
+     */
     function select_menu_item(workspace_id) {
         ui.select_menu_item("workspace-menu", workspace_id)
+        update_cookie()
+    }
+
+    /**
+     * Sets a cookie to reflect the selected workspace.
+     */
+    function update_cookie() {
+        set_cookie("workspace_id", get_workspace_id())
     }
 }
