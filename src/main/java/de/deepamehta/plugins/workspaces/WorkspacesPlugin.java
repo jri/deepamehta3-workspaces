@@ -17,31 +17,29 @@ public class WorkspacesPlugin extends DeepaMehtaPlugin {
     // Note: we must use the postCreateHook to create the relation because at pre_create the document has no ID yet.
     @Override
     public void postCreateHook(Topic topic, Map<String, String> clientContext) {
-        // Note 1: we do not relate search results to a workspace. Otherwise the search result would appear
-        // as relation when displaying the workspace. That's because a "SEARCH_RESULT" relation is not be
-        // created if there is another relation already.
-        // Note 2: we do not relate workspaces to a workspace. This would be contra-intuitive.
-        if (!topic.typeId.equals("Search Result") && !topic.typeId.equals("Workspace")) {
-            String workspaceId = clientContext.get("workspace_id");
-            if (workspaceId != null) {
-                dms.createRelation("RELATION", topic.id, Long.parseLong(workspaceId), null);
-            } else {
-                logger.warning(topic + " can't be related to a workspace (current workspace is unknown)");
-            }
-        } else {
-            logger.info("### " + topic + " is deliberately not assigned to any workspace");
+        // check precondition 1
+        if (topic.typeId.equals("Search Result") || topic.typeId.equals("Workspace")) {
+            // Note 1: we do not relate search results to a workspace. Otherwise the search result would appear
+            // as relation when displaying the workspace. That's because a "SEARCH_RESULT" relation is not be
+            // created if there is another relation already.
+            // Note 2: we do not relate workspaces to a workspace. This would be contra-intuitive.
+            logger.info(topic + " is deliberately not assigned to any workspace");
+            return;
         }
-    }
-
-    // ---
-
-    @Override
-    public String getClientPlugin() {
-        return "dm3_workspaces.js";
-    }
-
-    @Override
-    public int requiredDBModelVersion() {
-        return 1;
+        // check precondition 2
+        if (clientContext == null) {
+            logger.warning(topic + " can't be related to a workspace because current workspace is unknown " +
+                "(client context is not initialzed)");
+            return;
+        }
+        // check precondition 3
+        String workspaceId = clientContext.get("workspace_id");
+        if (workspaceId == null) {
+            logger.warning(topic + " can't be related to a workspace because current workspace is unknown " +
+                "(no setting found in client context)");
+            return;
+        }
+        // relate topic to workspace
+        dms.createRelation("RELATION", topic.id, Long.parseLong(workspaceId), null);
     }
 }

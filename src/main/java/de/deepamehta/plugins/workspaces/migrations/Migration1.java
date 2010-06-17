@@ -13,6 +13,7 @@ import java.util.Map;
 
 public class Migration1 extends Migration {
 
+    @Override
     public void run() {
         addWorkspacesFieldToAllTypes();
         createWorkspaceTopicType();
