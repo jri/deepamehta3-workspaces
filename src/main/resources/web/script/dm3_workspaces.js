@@ -38,16 +38,18 @@ function dm3_workspaces() {
             var workspace_dialog = $("<div>").attr("id", "workspace_dialog")
             var input = $("<input>").attr({id: "workspace_name", size: 30})
             workspace_dialog.append("Name:")
-            workspace_dialog.append($("<form>").submit(do_create_workspace).append(input))
+            workspace_dialog.append($("<form>").attr("action", "#").submit(do_create_workspace).append(input))
             $("body").append(workspace_dialog)
             $("#workspace_dialog").dialog({modal: true, autoOpen: false, draggable: false, resizable: false, width: 350,
                 title: "New Workspace", buttons: {"OK": do_create_workspace}})
         }
     }
 
-    // TODO: handle at server-side
-    this.post_delete = function(doc) {
-        if (doc.type == "Topic" && doc.topic_type == "Workspace") {
+    /**
+     * @param   topic   a Topic object
+     */
+    this.post_delete_topic = function(topic) {
+        if (topic.type_id == "Workspace") {
             var workspace_id = get_workspace_id()
             rebuild_workspace_menu()
             select_menu_item(workspace_id)  // restore selection
