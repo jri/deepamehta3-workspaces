@@ -65,7 +65,7 @@ function dm3_workspaces() {
 
 
     function get_all_workspaces() {
-        return dms.get_topics("Workspace")
+        return dmc.get_topics("Workspace")
     }
 
     /**
