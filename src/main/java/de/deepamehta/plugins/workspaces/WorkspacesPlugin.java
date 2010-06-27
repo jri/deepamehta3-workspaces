@@ -1,7 +1,7 @@
 package de.deepamehta.plugins.workspaces;
 
 import de.deepamehta.core.model.Topic;
-import de.deepamehta.core.plugin.DeepaMehtaPlugin;
+import de.deepamehta.core.service.Plugin;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 
 
-public class WorkspacesPlugin extends DeepaMehtaPlugin {
+public class WorkspacesPlugin extends Plugin {
 
     private Logger logger = Logger.getLogger(getClass().getName());
 
