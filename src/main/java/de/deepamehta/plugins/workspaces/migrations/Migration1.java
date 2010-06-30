@@ -23,23 +23,26 @@ public class Migration1 extends Migration {
 
     private void addWorkspacesFieldToAllTypes() {
         DataField workspacesField = new DataField("Workspaces");
+        workspacesField.setUri("http://www.deepamehta.de/core/property/Workspaces");
         workspacesField.setDataType("relation");
-        workspacesField.setRelatedTypeId("Workspace");
+        workspacesField.setRelatedTypeUri("http://www.deepamehta.de/core/topictype/Workspace");
         workspacesField.setEditor("checkboxes");
         // workspacesField.setIndexingMode("FULLTEXT_KEY");
         //
-        for (String typeId : dms.getTopicTypeIds()) {
-            dms.addDataField(typeId, workspacesField);
+        for (String typeUri : dms.getTopicTypeUris()) {
+            dms.addDataField(typeUri, workspacesField);
         }
     }
 
     private void createWorkspaceTopicType() {
         DataField nameField = new DataField("Name");
+        nameField.setUri("http://www.deepamehta.de/core/property/Name");
         nameField.setDataType("text");
         nameField.setEditor("single line");
         // nameField.setIndexingMode("FULLTEXT_KEY");
         //
         DataField descriptionField = new DataField("Description");
+        descriptionField.setUri("http://www.deepamehta.de/core/property/Description");
         descriptionField.setDataType("html");
         descriptionField.setEditor("multi line");
         // nameField.setIndexingMode("FULLTEXT_KEY");
@@ -49,7 +52,9 @@ public class Migration1 extends Migration {
         dataFields.add(descriptionField);
         //
         Map properties = new HashMap();
-        properties.put("type_id", "Workspace");
+        properties.put("http://www.deepamehta.de/core/property/TypeURI",
+                       "http://www.deepamehta.de/core/topictype/Workspace");
+        properties.put("http://www.deepamehta.de/core/property/TypeName", "Workspace");
         properties.put("icon_src", "/de.deepamehta.3-workspaces/images/star.png");
         properties.put("implementation", "PlainDocument");
         //
