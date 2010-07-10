@@ -49,7 +49,7 @@ function dm3_workspaces() {
      * @param   topic   a Topic object
      */
     this.post_delete_topic = function(topic) {
-        if (topic.type_uri == "http://www.deepamehta.de/core/topictype/Workspace") {
+        if (topic.type_uri == "de/deepamehta/core/topictype/Workspace") {
             var workspace_id = get_workspace_id()
             rebuild_workspace_menu()
             select_menu_item(workspace_id)  // restore selection
@@ -65,7 +65,7 @@ function dm3_workspaces() {
 
 
     function get_all_workspaces() {
-        return dmc.get_topics("http://www.deepamehta.de/core/topictype/Workspace")
+        return dmc.get_topics("de/deepamehta/core/topictype/Workspace")
     }
 
     /**
@@ -76,8 +76,8 @@ function dm3_workspaces() {
     }
 
     function create_workspace(name) {
-        var properties = {"http://www.deepamehta.de/core/property/Name": name}
-        return create_topic("http://www.deepamehta.de/core/topictype/Workspace", properties)
+        var properties = {"de/deepamehta/core/property/Name": name}
+        return create_topic("de/deepamehta/core/topictype/Workspace", properties)
     }
 
     /**
@@ -113,7 +113,7 @@ function dm3_workspaces() {
         }
         // add menu items
         ui.empty_menu("workspace-menu")
-        var icon_src = get_icon_src("http://www.deepamehta.de/core/topictype/Workspace")
+        var icon_src = get_icon_src("de/deepamehta/core/topictype/Workspace")
         for (var i = 0, workspace; workspace = workspaces[i]; i++) {
             ui.add_menu_item("workspace-menu", {label: workspace.label, value: workspace.id, icon: icon_src})
         }

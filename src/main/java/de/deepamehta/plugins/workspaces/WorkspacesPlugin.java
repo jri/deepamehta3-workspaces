@@ -18,8 +18,8 @@ public class WorkspacesPlugin extends Plugin {
     @Override
     public void postCreateHook(Topic topic, Map<String, String> clientContext) {
         // check precondition 1
-        if (topic.typeUri.equals("http://www.deepamehta.de/core/topictype/SearchResult") ||
-            topic.typeUri.equals("http://www.deepamehta.de/core/topictype/Workspace")) {
+        if (topic.typeUri.equals("de/deepamehta/core/topictype/SearchResult") ||
+            topic.typeUri.equals("de/deepamehta/core/topictype/Workspace")) {
             // Note 1: we do not relate search results to a workspace. Otherwise the search result would appear
             // as relation when displaying the workspace. That's because a "SEARCH_RESULT" relation is not be
             // created if there is another relation already.

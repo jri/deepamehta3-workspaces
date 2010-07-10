@@ -23,9 +23,9 @@ public class Migration1 extends Migration {
 
     private void addWorkspacesFieldToAllTypes() {
         DataField workspacesField = new DataField("Workspaces");
-        workspacesField.setUri("http://www.deepamehta.de/core/property/Workspaces");
+        workspacesField.setUri("de/deepamehta/core/property/Workspaces");
         workspacesField.setDataType("relation");
-        workspacesField.setRelatedTypeUri("http://www.deepamehta.de/core/topictype/Workspace");
+        workspacesField.setRelatedTypeUri("de/deepamehta/core/topictype/Workspace");
         workspacesField.setEditor("checkboxes");
         // workspacesField.setIndexingMode("FULLTEXT_KEY");
         //
@@ -36,13 +36,13 @@ public class Migration1 extends Migration {
 
     private void createWorkspaceTopicType() {
         DataField nameField = new DataField("Name");
-        nameField.setUri("http://www.deepamehta.de/core/property/Name");
+        nameField.setUri("de/deepamehta/core/property/Name");
         nameField.setDataType("text");
         nameField.setEditor("single line");
         // nameField.setIndexingMode("FULLTEXT_KEY");
         //
         DataField descriptionField = new DataField("Description");
-        descriptionField.setUri("http://www.deepamehta.de/core/property/Description");
+        descriptionField.setUri("de/deepamehta/core/property/Description");
         descriptionField.setDataType("html");
         descriptionField.setEditor("multi line");
         // nameField.setIndexingMode("FULLTEXT_KEY");
@@ -52,9 +52,8 @@ public class Migration1 extends Migration {
         dataFields.add(descriptionField);
         //
         Map properties = new HashMap();
-        properties.put("http://www.deepamehta.de/core/property/TypeURI",
-                       "http://www.deepamehta.de/core/topictype/Workspace");
-        properties.put("http://www.deepamehta.de/core/property/TypeName", "Workspace");
+        properties.put("de/deepamehta/core/property/TypeURI", "de/deepamehta/core/topictype/Workspace");
+        properties.put("de/deepamehta/core/property/TypeName", "Workspace");
         properties.put("icon_src", "/de.deepamehta.3-workspaces/images/star.png");
         properties.put("implementation", "PlainDocument");
         //
