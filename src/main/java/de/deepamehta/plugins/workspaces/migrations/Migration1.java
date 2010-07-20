@@ -22,12 +22,10 @@ public class Migration1 extends Migration {
     // ---
 
     private void addWorkspacesFieldToAllTypes() {
-        DataField workspacesField = new DataField("Workspaces");
+        DataField workspacesField = new DataField("Workspaces", "relation");
         workspacesField.setUri("de/deepamehta/core/property/Workspaces");
-        workspacesField.setDataType("relation");
         workspacesField.setRelatedTypeUri("de/deepamehta/core/topictype/Workspace");
         workspacesField.setEditor("checkboxes");
-        // workspacesField.setIndexingMode("FULLTEXT_KEY");
         //
         for (String typeUri : dms.getTopicTypeUris()) {
             dms.addDataField(typeUri, workspacesField);
@@ -35,16 +33,12 @@ public class Migration1 extends Migration {
     }
 
     private void createWorkspaceTopicType() {
-        DataField nameField = new DataField("Name");
+        DataField nameField = new DataField("Name", "text");
         nameField.setUri("de/deepamehta/core/property/Name");
-        nameField.setDataType("text");
-        nameField.setEditor("single line");
         // nameField.setIndexingMode("FULLTEXT_KEY");
         //
-        DataField descriptionField = new DataField("Description");
+        DataField descriptionField = new DataField("Description", "html");
         descriptionField.setUri("de/deepamehta/core/property/Description");
-        descriptionField.setDataType("html");
-        descriptionField.setEditor("multi line");
         // nameField.setIndexingMode("FULLTEXT_KEY");
         //
         List dataFields = new ArrayList();
