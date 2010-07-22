@@ -36,10 +36,12 @@ public class Migration1 extends Migration {
         DataField nameField = new DataField("Name", "text");
         nameField.setUri("de/deepamehta/core/property/Name");
         // nameField.setIndexingMode("FULLTEXT_KEY");
+        nameField.setRendererClass("TitleRenderer");
         //
         DataField descriptionField = new DataField("Description", "html");
         descriptionField.setUri("de/deepamehta/core/property/Description");
-        // nameField.setIndexingMode("FULLTEXT_KEY");
+        // descriptionField.setIndexingMode("FULLTEXT_KEY");
+        descriptionField.setRendererClass("BodyTextRenderer");
         //
         List dataFields = new ArrayList();
         dataFields.add(nameField);
