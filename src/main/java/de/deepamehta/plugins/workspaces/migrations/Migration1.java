@@ -22,7 +22,7 @@ public class Migration1 extends Migration {
     // ---
 
     private void addWorkspacesFieldToAllTypes() {
-        DataField workspacesField = new DataField("Workspaces", "relation");
+        DataField workspacesField = new DataField("Workspaces", "reference");
         workspacesField.setUri("de/deepamehta/core/property/Workspaces");
         workspacesField.setRelatedTypeUri("de/deepamehta/core/topictype/Workspace");
         workspacesField.setEditor("checkboxes");
@@ -49,9 +49,9 @@ public class Migration1 extends Migration {
         //
         Map properties = new HashMap();
         properties.put("de/deepamehta/core/property/TypeURI", "de/deepamehta/core/topictype/Workspace");
-        properties.put("de/deepamehta/core/property/TypeName", "Workspace");
+        properties.put("de/deepamehta/core/property/TypeLabel", "Workspace");
         properties.put("icon_src", "/de.deepamehta.3-workspaces/images/star.png");
-        properties.put("implementation", "PlainDocument");
+        properties.put("js_renderer_class", "PlainDocument");
         //
         dms.createTopicType(properties, dataFields);
     }
