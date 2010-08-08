@@ -5,7 +5,7 @@
     <name>DeepaMehta 3 Workspaces</name>
     <groupId>de.deepamehta</groupId>
     <artifactId>deepamehta3-workspaces</artifactId>
-    <version>0.4</version>
+    <version>0.4.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <parent>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>de.deepamehta</groupId>
             <artifactId>deepamehta3-core</artifactId>
-            <version>0.4</version>
+            <version>0.4.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -36,7 +36,9 @@
                         <Private-Package>
                             de.deepamehta.plugins.workspaces
                         </Private-Package>
-                        <Bundle-Activator>de.deepamehta.plugins.workspaces.WorkspacesPlugin</Bundle-Activator>
+                        <Bundle-Activator>
+                            de.deepamehta.plugins.workspaces.WorkspacesPlugin
+                        </Bundle-Activator>
                     </instructions>
                 </configuration>
             </plugin>

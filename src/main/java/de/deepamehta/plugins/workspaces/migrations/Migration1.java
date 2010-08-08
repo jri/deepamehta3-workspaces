@@ -35,13 +35,13 @@ public class Migration1 extends Migration {
     private void createWorkspaceTopicType() {
         DataField nameField = new DataField("Name", "text");
         nameField.setUri("de/deepamehta/core/property/Name");
-        // nameField.setIndexingMode("FULLTEXT_KEY");
         nameField.setRendererClass("TitleRenderer");
+        nameField.setIndexingMode("FULLTEXT");
         //
         DataField descriptionField = new DataField("Description", "html");
         descriptionField.setUri("de/deepamehta/core/property/Description");
-        // descriptionField.setIndexingMode("FULLTEXT_KEY");
         descriptionField.setRendererClass("BodyTextRenderer");
+        descriptionField.setIndexingMode("FULLTEXT");
         //
         List dataFields = new ArrayList();
         dataFields.add(nameField);
