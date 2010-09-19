@@ -1,6 +1,6 @@
 function dm3_workspaces() {
 
-    css_stylesheet("/de.deepamehta.3-workspaces/style/dm3-workspaces.css")
+    dm3c.css_stylesheet("/de.deepamehta.3-workspaces/style/dm3-workspaces.css")
 
 
 
@@ -29,7 +29,7 @@ function dm3_workspaces() {
             var workspace_menu = $("<div>").attr("id", "workspace-menu")
             var workspace_form = $("<div>").attr("id", "workspace-form").append(workspace_label).append(workspace_menu)
             $("#upper-toolbar").prepend(workspace_form)
-            ui.menu("workspace-menu", workspace_selected)
+            dm3c.ui.menu("workspace-menu", workspace_selected)
             rebuild_workspace_menu(workspaces)
             update_cookie()
         }
@@ -65,19 +65,19 @@ function dm3_workspaces() {
 
 
     function get_all_workspaces() {
-        return dmc.get_topics("de/deepamehta/core/topictype/Workspace")
+        return dm3c.restc.get_topics("de/deepamehta/core/topictype/Workspace")
     }
 
     /**
      * Returns the ID of the selected workspace.
      */
     function get_workspace_id() {
-        return ui.menu_item("workspace-menu").value
+        return dm3c.ui.menu_item("workspace-menu").value
     }
 
     function create_workspace(name) {
         var properties = {"de/deepamehta/core/property/Name": name}
-        return create_topic("de/deepamehta/core/topictype/Workspace", properties)
+        return dm3c.create_topic("de/deepamehta/core/topictype/Workspace", properties)
     }
 
     /**
@@ -85,12 +85,12 @@ function dm3_workspaces() {
      */
     function workspace_selected(menu_item) {
         var workspace_id = menu_item.value
-        log("Workspace selected: " + workspace_id)
+        dm3c.log("Workspace selected: " + workspace_id)
         update_cookie()
         if (workspace_id == "_new") {
             open_workspace_dialog()
         } else {
-            reveal_topic(workspace_id)
+            dm3c.reveal_topic(workspace_id)
         }
     }
 
@@ -112,20 +112,20 @@ function dm3_workspaces() {
             workspaces = get_all_workspaces()
         }
         // add menu items
-        ui.empty_menu("workspace-menu")
-        var icon_src = get_icon_src("de/deepamehta/core/topictype/Workspace")
+        dm3c.ui.empty_menu("workspace-menu")
+        var icon_src = dm3c.get_icon_src("de/deepamehta/core/topictype/Workspace")
         for (var i = 0, workspace; workspace = workspaces[i]; i++) {
-            ui.add_menu_item("workspace-menu", {label: workspace.label, value: workspace.id, icon: icon_src})
+            dm3c.ui.add_menu_item("workspace-menu", {label: workspace.label, value: workspace.id, icon: icon_src})
         }
-        ui.add_menu_separator("workspace-menu")
-        ui.add_menu_item("workspace-menu", {label: "New Workspace...", value: "_new", is_trigger: true})
+        dm3c.ui.add_menu_separator("workspace-menu")
+        dm3c.ui.add_menu_item("workspace-menu", {label: "New Workspace...", value: "_new", is_trigger: true})
     }
 
     /**
      * Selects a workspace programmatically.
      */
     function select_menu_item(workspace_id) {
-        ui.select_menu_item("workspace-menu", workspace_id)
+        dm3c.ui.select_menu_item("workspace-menu", workspace_id)
         update_cookie()
     }
 
@@ -133,6 +133,6 @@ function dm3_workspaces() {
      * Sets a cookie to reflect the selected workspace.
      */
     function update_cookie() {
-        set_cookie("workspace_id", get_workspace_id())
+        dm3c.set_cookie("workspace_id", get_workspace_id())
     }
 }
