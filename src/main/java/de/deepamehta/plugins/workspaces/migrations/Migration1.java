@@ -11,6 +11,7 @@ import java.util.Map;
 
 
 
+// Distributed with Workspaces plugin v0.4
 public class Migration1 extends Migration {
 
     @Override
@@ -36,12 +37,12 @@ public class Migration1 extends Migration {
         DataField nameField = new DataField("Name", "text");
         nameField.setUri("de/deepamehta/core/property/Name");
         nameField.setRendererClass("TitleRenderer");
-        nameField.setIndexingMode("FULLTEXT");
+        nameField.setIndexingMode("FULLTEXT");          // Added *after* v0.4. Upadated through migration 2.
         //
         DataField descriptionField = new DataField("Description", "html");
         descriptionField.setUri("de/deepamehta/core/property/Description");
         descriptionField.setRendererClass("BodyTextRenderer");
-        descriptionField.setIndexingMode("FULLTEXT");
+        descriptionField.setIndexingMode("FULLTEXT");   // Added *after* v0.4. Upadated through migration 2.
         //
         List dataFields = new ArrayList();
         dataFields.add(nameField);
