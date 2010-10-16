@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 
 /**
- * Repairs to data field definitions which were broken in deepamehta3-workspaces v0.4.
+ * Repairs two data field definitions which were broken in deepamehta3-workspaces v0.4.
  * <p>
  * Note: this migration is distributed with deepamehta3-workspaces v0.4.1. and is set to run only when updating
  * from deepamehta3-workspaces v0.4 to v0.4.1 (see migration2.properties).
