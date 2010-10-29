@@ -1,6 +1,8 @@
 package de.deepamehta.plugins.workspaces;
 
+import de.deepamehta.core.model.DataField;
 import de.deepamehta.core.model.Topic;
+import de.deepamehta.core.model.TopicType;
 import de.deepamehta.core.service.Plugin;
 
 import java.util.Date;
@@ -12,7 +14,19 @@ import java.util.logging.Logger;
 
 public class WorkspacesPlugin extends Plugin {
 
+    // ---------------------------------------------------------------------------------------------- Instance Variables
+
     private Logger logger = Logger.getLogger(getClass().getName());
+
+    // -------------------------------------------------------------------------------------------------- Public Methods
+
+
+
+    // ************************
+    // *** Overriding Hooks ***
+    // ************************
+
+
 
     // Note: we must use the postCreateHook to create the relation because at pre_create the document has no ID yet.
     @Override
@@ -42,5 +56,19 @@ public class WorkspacesPlugin extends Plugin {
         }
         // relate topic to workspace
         dms.createRelation("RELATION", topic.id, Long.parseLong(workspaceId), null);
+    }
+
+    /**
+     * Adds "Workspaces" data field to all topic types.
+     */
+    @Override
+    public void modifyTopicTypeHook(TopicType topicType) {
+        //
+        DataField workspacesField = new DataField("Workspaces", "reference");
+        workspacesField.setUri("de/deepamehta/core/property/Workspaces");
+        workspacesField.setRelatedTypeUri("de/deepamehta/core/topictype/Workspace");
+        workspacesField.setEditor("checkboxes");
+        //
+        topicType.addDataField(workspacesField);
     }
 }

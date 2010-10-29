@@ -11,27 +11,17 @@ import java.util.Map;
 
 
 
-// Distributed with Workspaces plugin v0.4
+/**
+ * Distributed with Workspaces plugin v0.4
+ */
 public class Migration1 extends Migration {
 
     @Override
     public void run() {
-        addWorkspacesFieldToAllTypes();
         createWorkspaceTopicType();
     }
 
     // ---
-
-    private void addWorkspacesFieldToAllTypes() {
-        DataField workspacesField = new DataField("Workspaces", "reference");
-        workspacesField.setUri("de/deepamehta/core/property/Workspaces");
-        workspacesField.setRelatedTypeUri("de/deepamehta/core/topictype/Workspace");
-        workspacesField.setEditor("checkboxes");
-        //
-        for (String typeUri : dms.getTopicTypeUris()) {
-            dms.addDataField(typeUri, workspacesField);
-        }
-    }
 
     private void createWorkspaceTopicType() {
         DataField nameField = new DataField("Name", "text");
