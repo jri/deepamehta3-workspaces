@@ -133,6 +133,6 @@ function dm3_workspaces() {
      * Sets a cookie to reflect the selected workspace.
      */
     function update_cookie() {
-        dm3c.set_cookie("workspace_id", get_workspace_id())
+        js.set_cookie("dm3_workspace_id", get_workspace_id())
     }
 }

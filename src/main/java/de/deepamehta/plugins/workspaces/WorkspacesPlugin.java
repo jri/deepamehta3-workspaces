@@ -48,7 +48,7 @@ public class WorkspacesPlugin extends Plugin {
             return;
         }
         // check precondition 3
-        String workspaceId = clientContext.get("workspace_id");
+        String workspaceId = clientContext.get("dm3_workspace_id");
         if (workspaceId == null) {
             logger.warning(topic + " can't be related to a workspace because current workspace is unknown " +
                 "(no setting found in client context)");
