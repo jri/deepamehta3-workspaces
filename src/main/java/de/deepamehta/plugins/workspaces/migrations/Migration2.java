@@ -24,7 +24,8 @@ public class Migration2 extends Migration {
 
     @Override
     public void run() {
-        TopicType workspaceType = dms.getTopicType("de/deepamehta/core/topictype/Workspace");
+        // clientContext=null
+        TopicType workspaceType = dms.getTopicType("de/deepamehta/core/topictype/Workspace", null);
         DataField nameField        = workspaceType.getDataField("de/deepamehta/core/property/Name");
         DataField descriptionField = workspaceType.getDataField("de/deepamehta/core/property/Description");
         nameField.setRendererClass("TitleRenderer");
