@@ -44,6 +44,6 @@ public class Migration1 extends Migration {
         properties.put("icon_src", "/de.deepamehta.3-workspaces/images/star.png");
         properties.put("js_renderer_class", "PlainDocument");
         //
-        dms.createTopicType(properties, dataFields);
+        dms.createTopicType(properties, dataFields, null);  // clientContext=null
     }
 }
