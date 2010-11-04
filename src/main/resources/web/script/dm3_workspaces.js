@@ -90,7 +90,8 @@ function dm3_workspaces() {
         if (workspace_id == "_new") {
             open_workspace_dialog()
         } else {
-            dm3c.reveal_topic(workspace_id)
+            var workspace = dm3c.restc.get_topic(workspace_id)
+            dm3c.add_topic_to_canvas(workspace, "show")
         }
     }
 
