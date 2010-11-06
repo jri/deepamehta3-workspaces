@@ -2,11 +2,13 @@ function dm3_workspaces() {
 
     dm3c.css_stylesheet("/de.deepamehta.3-workspaces/style/dm3-workspaces.css")
 
+    // ------------------------------------------------------------------------------------------------------ Public API
 
 
-    /**************************************************************************************************/
-    /**************************************** Overriding Hooks ****************************************/
-    /**************************************************************************************************/
+
+    // *******************************
+    // *** Overriding Plugin Hooks ***
+    // *******************************
 
 
 
@@ -19,7 +21,7 @@ function dm3_workspaces() {
 
         function create_default_workspace() {
             if (!workspaces.length) {
-                create_workspace("Default")
+                create_workspace_topic("Default")
                 workspaces = get_all_workspaces()
             }
         }
@@ -29,8 +31,8 @@ function dm3_workspaces() {
             var workspace_menu = $("<div>").attr("id", "workspace-menu")
             var workspace_form = $("<div>").attr("id", "workspace-form").append(workspace_label).append(workspace_menu)
             $("#upper-toolbar").prepend(workspace_form)
-            dm3c.ui.menu("workspace-menu", workspace_selected)
-            rebuild_workspace_menu(workspaces)
+            dm3c.ui.menu("workspace-menu", do_select_workspace)
+            rebuild_workspace_menu(undefined, workspaces)
             update_cookie()
         }
 
@@ -50,40 +52,60 @@ function dm3_workspaces() {
      */
     this.post_delete_topic = function(topic) {
         if (topic.type_uri == "de/deepamehta/core/topictype/Workspace") {
-            var workspace_id = get_workspace_id()
             rebuild_workspace_menu()
-            select_menu_item(workspace_id)  // restore selection
         }
     }
 
 
 
-    /************************************************************************************************/
-    /**************************************** Custom Methods ****************************************/
-    /************************************************************************************************/
+    // ***************************************
+    // *** Overriding Access Control Hooks ***
+    // ***************************************
 
 
+
+    this.user_logged_in = function() {
+        rebuild_workspace_menu()
+    }
+
+    this.user_logged_out = function() {
+        rebuild_workspace_menu()
+    }
+
+
+
+    // ----------------------------------------------------------------------------------------------- Private Functions
 
     function get_all_workspaces() {
         return dm3c.restc.get_topics("de/deepamehta/core/topictype/Workspace")
     }
 
     /**
-     * Returns the ID of the selected workspace.
+     * Reads out the workspace menu and returns the workspace ID.
+     * If the workspace menu has no items yet, undefined is returned.
      */
-    function get_workspace_id() {
-        return dm3c.ui.menu_item("workspace-menu").value
+    function get_workspace_id_from_menu() {
+        var item = dm3c.ui.menu_item("workspace-menu")
+        if (item) {
+            return item.value
+        }
     }
 
-    function create_workspace(name) {
-        var properties = {"de/deepamehta/core/property/Name": name}
-        return dm3c.create_topic("de/deepamehta/core/topictype/Workspace", properties)
+    function open_workspace_dialog() {
+        $("#workspace_dialog").dialog("open")
+    }
+
+    function do_create_workspace() {
+        $("#workspace_dialog").dialog("close")
+        var name = $("#workspace_name").val()
+        create_workspace(name)
+        return false
     }
 
     /**
-     * Invoked when the user selects a workspace.
+     * Invoked when the user made a selection from the workspace menu.
      */
-    function workspace_selected(menu_item) {
+    function do_select_workspace(menu_item) {
         var workspace_id = menu_item.value
         dm3c.log("Workspace selected: " + workspace_id)
         update_cookie()
@@ -95,35 +117,55 @@ function dm3_workspaces() {
         }
     }
 
-    function open_workspace_dialog() {
-        $("#workspace_dialog").dialog("open")
-    }
+    // ---
 
-    function do_create_workspace() {
-        $("#workspace_dialog").dialog("close")
-        var name = $("#workspace_name").val()
-        var workspace_id = create_workspace(name).id
-        rebuild_workspace_menu()
-        select_menu_item(workspace_id)
-        return false
-    }
-
-    function rebuild_workspace_menu(workspaces) {
-        if (!workspaces) {
-            workspaces = get_all_workspaces()
-        }
-        // add menu items
-        dm3c.ui.empty_menu("workspace-menu")
-        var icon_src = dm3c.get_icon_src("de/deepamehta/core/topictype/Workspace")
-        for (var i = 0, workspace; workspace = workspaces[i]; i++) {
-            dm3c.ui.add_menu_item("workspace-menu", {label: workspace.label, value: workspace.id, icon: icon_src})
-        }
-        dm3c.ui.add_menu_separator("workspace-menu")
-        dm3c.ui.add_menu_item("workspace-menu", {label: "New Workspace...", value: "_new", is_trigger: true})
+    /**
+     * Creates a workspace with the given name and puts it in the workspace menu.
+     */
+    function create_workspace(name) {
+        var workspace = create_workspace_topic(name)
+        rebuild_workspace_menu(workspace.id)
     }
 
     /**
-     * Selects a workspace programmatically.
+     * Creates a new workspace in the DB.
+     */
+    function create_workspace_topic(name) {
+        var properties = {"de/deepamehta/core/property/Name": name}
+        return dm3c.create_topic("de/deepamehta/core/topictype/Workspace", properties)
+    }
+
+    // ---
+
+    /**
+     * @param   workspace_id    Optional: ID of the workspace to select.
+     *                          If not given, the current selection is maintained.
+     */
+    function rebuild_workspace_menu(workspace_id, workspaces) {
+        if (!workspace_id) {
+            workspace_id = get_workspace_id_from_menu()
+        }
+        if (!workspaces) {
+            workspaces = get_all_workspaces()
+        }
+        //
+        dm3c.ui.empty_menu("workspace-menu")
+        var icon_src = dm3c.get_icon_src("de/deepamehta/core/topictype/Workspace")
+        // add workspaces to menu
+        for (var i = 0, workspace; workspace = workspaces[i]; i++) {
+            dm3c.ui.add_menu_item("workspace-menu", {label: workspace.label, value: workspace.id, icon: icon_src})
+        }
+        // add "New..." to menu
+        if (dm3c.has_create_permission("de/deepamehta/core/topictype/Workspace")) {
+            dm3c.ui.add_menu_separator("workspace-menu")
+            dm3c.ui.add_menu_item("workspace-menu", {label: "New Workspace...", value: "_new", is_trigger: true})
+        }
+        //
+        select_menu_item(workspace_id)
+    }
+
+    /**
+     * Selects an item from the workspace menu.
      */
     function select_menu_item(workspace_id) {
         dm3c.ui.select_menu_item("workspace-menu", workspace_id)
@@ -131,9 +173,9 @@ function dm3_workspaces() {
     }
 
     /**
-     * Sets a cookie to reflect the selected workspace.
+     * Sets a cookie that reflects the selected workspace.
      */
     function update_cookie() {
-        js.set_cookie("dm3_workspace_id", get_workspace_id())
+        js.set_cookie("dm3_workspace_id", get_workspace_id_from_menu())
     }
 }
