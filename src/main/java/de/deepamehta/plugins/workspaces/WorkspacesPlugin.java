@@ -62,7 +62,7 @@ public class WorkspacesPlugin extends Plugin {
      * Adds "Workspaces" data field to all topic types.
      */
     @Override
-    public void modifyTopicTypeHook(TopicType topicType) {
+    public void modifyTopicTypeHook(TopicType topicType, Map<String, String> clientContext) {
         //
         DataField workspacesField = new DataField("Workspaces", "reference");
         workspacesField.setUri("de/deepamehta/core/property/Workspaces");
