@@ -66,7 +66,7 @@ public class WorkspacesPlugin extends Plugin {
         //
         DataField workspacesField = new DataField("Workspaces", "reference");
         workspacesField.setUri("de/deepamehta/core/property/Workspaces");
-        workspacesField.setRelatedTypeUri("de/deepamehta/core/topictype/Workspace");
+        workspacesField.setRefTopicTypeUri("de/deepamehta/core/topictype/Workspace");
         workspacesField.setEditor("checkboxes");
         //
         topicType.addDataField(workspacesField);
