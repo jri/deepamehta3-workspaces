@@ -5,7 +5,7 @@
     <name>DeepaMehta 3 Workspaces</name>
     <groupId>de.deepamehta</groupId>
     <artifactId>deepamehta3-workspaces</artifactId>
-    <version>0.4.2</version>
+    <version>0.4.3-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <parent>
@@ -31,11 +31,9 @@
                 <configuration>
                     <instructions>
                         <Export-Package>
+                            de.deepamehta.plugins.workspaces,
                             de.deepamehta.plugins.workspaces.migrations
                         </Export-Package>
-                        <Private-Package>
-                            de.deepamehta.plugins.workspaces
-                        </Private-Package>
                         <Bundle-Activator>
                             de.deepamehta.plugins.workspaces.WorkspacesPlugin
                         </Bundle-Activator>

@@ -1,4 +1,4 @@
-function dm3_workspaces() {
+function workspaces_plugin() {
 
     dm3c.css_stylesheet("/de.deepamehta.3-workspaces/style/dm3-workspaces.css")
 
@@ -112,7 +112,7 @@ function dm3_workspaces() {
         if (workspace_id == "_new") {
             open_workspace_dialog()
         } else {
-            var workspace = dm3c.restc.get_topic(workspace_id)
+            var workspace = dm3c.restc.get_topic_by_id(workspace_id)
             dm3c.add_topic_to_canvas(workspace, "show")
         }
     }
