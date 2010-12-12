@@ -64,7 +64,7 @@ function workspaces_plugin() {
 
 
 
-    this.user_logged_in = function() {
+    this.user_logged_in = function(user) {
         rebuild_workspace_menu()
     }
 
